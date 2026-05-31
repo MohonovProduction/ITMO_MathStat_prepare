@@ -24,7 +24,7 @@ const statusChip = computed(() => {
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3">
         <div
-          class="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
+          class="emoji flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
           :class="level.passed ? 'bg-emerald-100' : 'bg-slate-100'"
         >
           {{ level.unlocked ? level.icon : '🔒' }}

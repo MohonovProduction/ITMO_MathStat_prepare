@@ -81,7 +81,7 @@ function retry() {
     <!-- Результат -->
     <template v-else>
       <div class="card flex flex-col items-center gap-4 p-8 text-center">
-        <div class="text-5xl">{{ percent >= PASS_THRESHOLD ? '🎉' : '📚' }}</div>
+        <div class="emoji text-5xl">{{ percent >= PASS_THRESHOLD ? '🎉' : '📚' }}</div>
         <h2 class="text-2xl font-bold text-slate-900">Результат: {{ percent }}%</h2>
         <p class="text-slate-600">
           Правильно {{ correctCount }} из {{ total }} по теме «{{ levelTitle(levelId) }}».

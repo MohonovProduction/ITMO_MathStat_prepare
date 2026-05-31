@@ -52,7 +52,7 @@ const router = createRouter({
 })
 
 router.afterEach((to) => {
-  const base = 'Матстат — подготовка'
+  const base = 'Матстат · Господин БаллОвский'
   document.title = to.meta?.title ? `${to.meta.title} · ${base}` : base
 })
 

@@ -30,9 +30,12 @@ const levelStats = computed(() =>
   <div class="flex flex-col gap-6">
     <!-- Герой / общий прогресс -->
     <section class="card overflow-hidden">
-      <div class="bg-gradient-to-br from-brand-600 to-brand-800 p-6 text-white sm:p-8">
+      <div
+        class="p-6 text-slate-800 sm:p-8"
+        style="background-image: linear-gradient(120deg, #fbf8cc 0%, #ffcfd2 22%, #f1c0e8 42%, #cfbaf0 60%, #a3c4f3 78%, #98f5e1 100%)"
+      >
         <h1 class="text-2xl font-extrabold sm:text-3xl">Подготовка к экзамену по матстату</h1>
-        <p class="mt-1 max-w-xl text-brand-100">
+        <p class="mt-1 max-w-xl text-slate-700">
           Теория, карточки, воронка из трёх уровней и пробный экзамен. Прогресс сохраняется
           автоматически в этом браузере.
         </p>
@@ -41,12 +44,12 @@ const levelStats = computed(() =>
         <ProgressBar :value="overall" label="Общий прогресс" size="lg" />
         <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div v-for="d in deckStats" :key="d.id" class="rounded-xl bg-slate-50 p-3 text-center">
-            <div class="text-xl">{{ d.icon }}</div>
+            <div class="emoji text-xl">{{ d.icon }}</div>
             <div class="text-xs text-slate-500">{{ d.title }}</div>
             <div class="text-lg font-bold text-slate-800">{{ d.percent }}%</div>
           </div>
           <div class="rounded-xl bg-slate-50 p-3 text-center">
-            <div class="text-xl">🎓</div>
+            <div class="emoji text-xl">🎓</div>
             <div class="text-xs text-slate-500">Экзамен</div>
             <div class="text-lg font-bold text-slate-800">{{ exam.best }}%</div>
           </div>
@@ -62,7 +65,7 @@ const levelStats = computed(() =>
         class="card flex items-start gap-4 p-5 text-left transition hover:-translate-y-0.5 hover:shadow-md"
         @click="router.push(t.to)"
       >
-        <div class="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-brand-50 text-2xl">
+        <div class="emoji flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-brand-50 text-2xl">
           {{ t.icon }}
         </div>
         <div>
@@ -77,7 +80,7 @@ const levelStats = computed(() =>
       <h2 class="mb-4 text-lg font-bold text-slate-900">Уровни подготовки</h2>
       <div class="flex flex-col gap-4">
         <div v-for="l in levelStats" :key="l.id" class="flex items-center gap-3">
-          <span class="text-xl">{{ l.passed ? '✅' : l.icon }}</span>
+          <span class="emoji text-xl">{{ l.passed ? '✅' : l.icon }}</span>
           <div class="flex-1">
             <ProgressBar :value="l.score" :color="l.color" :label="l.title" size="sm" />
           </div>

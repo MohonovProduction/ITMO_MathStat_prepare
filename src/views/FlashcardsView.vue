@@ -23,10 +23,10 @@ const { current, index, cards, stats, flipped, statusOf, flip, next, prev, mark,
         v-for="d in DECKS"
         :key="d.id"
         class="flex flex-col items-center gap-0.5 rounded-xl px-2 py-3 text-center transition"
-        :class="activeDeck === d.id ? 'bg-brand-600 text-white' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50'"
+        :class="activeDeck === d.id ? 'bg-brand-gradient text-slate-800 shadow-sm' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50'"
         @click="activeDeck = d.id; goTo(0)"
       >
-        <span class="text-xl">{{ d.icon }}</span>
+        <span class="emoji text-xl">{{ d.icon }}</span>
         <span class="text-sm font-semibold">{{ d.title }}</span>
         <span class="text-[11px] opacity-80">{{ d.hint }}</span>
       </button>

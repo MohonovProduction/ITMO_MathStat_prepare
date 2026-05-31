@@ -7,10 +7,16 @@ const props = defineProps({
 })
 
 const barColors = {
-  brand: 'bg-brand-600',
-  emerald: 'bg-emerald-500',
-  violet: 'bg-violet-500',
-  amber: 'bg-amber-500',
+  brand: 'bg-brand-gradient',
+  mint: 'bg-accent-mint',
+  sky: 'bg-accent-sky',
+  pink: 'bg-accent-pink',
+  lavender: 'bg-accent-lavender',
+  peach: 'bg-accent-peach',
+  amber: 'bg-accent-yellow',
+  // обратная совместимость со старыми ключами
+  emerald: 'bg-accent-mint',
+  violet: 'bg-accent-lavender',
 }
 const heights = { sm: 'h-1.5', md: 'h-2.5', lg: 'h-4' }
 </script>

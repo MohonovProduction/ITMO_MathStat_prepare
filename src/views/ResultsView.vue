@@ -26,7 +26,7 @@ const passed = computed(() => exam.value.lastPercent >= 60)
     <template v-else>
       <!-- Итог -->
       <div class="card flex flex-col items-center gap-3 p-8 text-center">
-        <div class="text-5xl">{{ passed ? '🎓' : '📚' }}</div>
+        <div class="emoji text-5xl">{{ passed ? '🎓' : '📚' }}</div>
         <h1 class="text-3xl font-extrabold text-slate-900">{{ exam.lastPercent }}%</h1>
         <p class="text-slate-600">Результат последнего экзамена</p>
         <div class="flex gap-4 text-sm text-slate-500">

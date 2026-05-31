@@ -6,11 +6,11 @@ const route = useRoute()
 const open = ref(false)
 
 const links = [
-  { to: '/', label: 'Главная', icon: '🏠' },
-  { to: '/theory', label: 'Теория', icon: '📚' },
-  { to: '/flashcards', label: 'Карточки', icon: '🃏' },
-  { to: '/funnel', label: 'Воронка', icon: '🎯' },
-  { to: '/exam', label: 'Экзамен', icon: '🎓' },
+  { to: '/', label: 'Главная', icon: 'home' },
+  { to: '/theory', label: 'Теория', icon: 'menu_book' },
+  { to: '/flashcards', label: 'Карточки', icon: 'style' },
+  { to: '/funnel', label: 'Воронка', icon: 'filter_alt' },
+  { to: '/exam', label: 'Экзамен', icon: 'school' },
 ]
 
 function isActive(to) {
@@ -22,10 +22,10 @@ function isActive(to) {
 <template>
   <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
     <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-      <RouterLink to="/" class="flex items-center gap-2 font-extrabold text-slate-900">
-        <span class="text-xl">📊</span>
-        <span class="hidden sm:inline">Матстат · подготовка</span>
-        <span class="sm:hidden">Матстат</span>
+      <RouterLink to="/" class="flex items-center gap-2 font-extrabold">
+        <span class="material-symbols-rounded text-gradient" style="font-size: 1.6rem">insights</span>
+        <span class="text-gradient hidden sm:inline">Матстат · Господин БаллОвский</span>
+        <span class="text-gradient sm:hidden">Матстат</span>
       </RouterLink>
 
       <!-- Десктоп-меню -->
@@ -34,9 +34,10 @@ function isActive(to) {
           v-for="l in links"
           :key="l.to"
           :to="l.to"
-          class="rounded-lg px-3 py-2 text-sm font-medium transition-colors"
-          :class="isActive(l.to) ? 'bg-brand-50 text-brand-700' : 'text-slate-600 hover:bg-slate-100'"
+          class="link-gradient flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+          :class="isActive(l.to) ? 'is-active text-slate-900' : 'text-slate-600 hover:text-slate-900'"
         >
+          <span class="material-symbols-rounded" style="font-size: 1.15rem">{{ l.icon }}</span>
           {{ l.label }}
         </RouterLink>
       </nav>
@@ -47,7 +48,7 @@ function isActive(to) {
         aria-label="Меню"
         @click="open = !open"
       >
-        <span class="text-lg leading-none">{{ open ? '✕' : '☰' }}</span>
+        <span class="material-symbols-rounded leading-none">{{ open ? 'close' : 'menu' }}</span>
       </button>
     </div>
 
@@ -58,11 +59,11 @@ function isActive(to) {
           v-for="l in links"
           :key="l.to"
           :to="l.to"
-          class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium"
-          :class="isActive(l.to) ? 'bg-brand-50 text-brand-700' : 'text-slate-700'"
+          class="link-gradient flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium"
+          :class="isActive(l.to) ? 'is-active text-slate-900' : 'text-slate-700'"
           @click="open = false"
         >
-          <span>{{ l.icon }}</span>{{ l.label }}
+          <span class="material-symbols-rounded" style="font-size: 1.25rem">{{ l.icon }}</span>{{ l.label }}
         </RouterLink>
       </nav>
     </Transition>

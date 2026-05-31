@@ -27,7 +27,7 @@ function onComplete({ levelId: lvl, correct, total }) {
         v-for="l in LEVELS"
         :key="l.id"
         class="rounded-full px-4 py-2 text-sm font-semibold transition"
-        :class="levelId === l.id ? 'bg-brand-600 text-white' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50'"
+        :class="levelId === l.id ? 'bg-brand-gradient text-slate-800 shadow-sm' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50'"
         @click="router.replace(`/minitest/${l.id}`)"
       >
         {{ l.icon }} {{ l.title }}
