@@ -8,7 +8,7 @@ defineProps({ item: { type: Object, required: true } })
 <template>
   <details class="card group p-4">
     <summary class="cursor-pointer list-none font-semibold text-slate-900">
-      <span class="text-brand-600">{{ item.id }}.</span> {{ item.title }}
+      <span class="text-brand-600">{{ item.id }}.</span> <MathText :text="item.title" />
     </summary>
     <div class="mt-3 flex flex-col gap-3 border-t border-slate-100 pt-3">
       <p class="text-sm text-slate-700"><MathText :text="item.definition" /></p>

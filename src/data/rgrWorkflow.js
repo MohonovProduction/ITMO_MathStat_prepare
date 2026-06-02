@@ -2,8 +2,8 @@ export const RGR_STEPS = [
   { id: 'setup', title: '1. Постановка', content: 'Определите генеральную совокупность, параметр $\\theta$ и объём выборки $n$. В C-15: признаки X1–X4.', checklist: ['Что измеряем?','Какой параметр интересует?'] },
   { id: 'descriptive', title: '2. Описательная статистика', content: '$\\bar X$, $S^2$, EDF, гистограмма. Данные: вариант C-15.', checklist: ['Посчитать среднее и дисперсию','Построить гистограмму (площадь = доля)'], datasetRef: 'c15.X1' },
   { id: 'criterion', title: '3. Выбор критерия', content: 'Условия: нормальность, известна ли $\\sigma^2$, одна или две выборки.', branches: [
-    { if: '\\sigma^2 известна', goto: 'z-test' },
-    { if: '\\sigma^2 неизвестна', goto: 't-test' },
+    { if: '$\\sigma^2$ известна', goto: 'z-test' },
+    { if: '$\\sigma^2$ неизвестна', goto: 't-test' },
     { if: 'проверка закона (непрерывный)', goto: 'kolmogorov' },
     { if: 'группировка / дискретные частоты', goto: 'pearson' },
   ]},
@@ -14,8 +14,8 @@ export const RGR_STEPS = [
 ]
 
 export const BRANCH_LABELS = {
-  'z-test': 'z-критерий (\\sigma известна)',
+  'z-test': 'z-критерий ($\\sigma^2$ известна)',
   't-test': 't-критерий Стьюдента',
   'kolmogorov': 'Критерий Колмогорова',
-  'pearson': '\\chi^2 Пирсона',
+  'pearson': '$\\chi^2$ Пирсона',
 }

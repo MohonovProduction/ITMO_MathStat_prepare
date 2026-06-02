@@ -1,19 +1,12 @@
 <script setup>
-import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import MathText from '@/components/MathText.vue'
 import { conceptNodes, conceptEdges } from '@/data/conceptGraph'
-import { theory } from '@/data/theory'
 
 const router = useRouter()
-const selected = computed(() => null)
 
 function goTheory(theoryId) {
   if (theoryId) router.push({ path: '/theory', query: { q: theoryId } })
-}
-
-function summary(theoryId) {
-  const t = theory.find((x) => x.id === theoryId)
-  return t ? t.title : ''
 }
 </script>
 
@@ -35,11 +28,11 @@ function summary(theoryId) {
       v-for="node in conceptNodes"
       :key="node.id"
       type="button"
-      class="absolute min-h-[40px] max-w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-2 py-1.5 text-left text-[11px] font-semibold shadow ring-1 ring-slate-200 hover:ring-brand-400 sm:text-xs"
+      class="absolute min-h-[40px] max-w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-2 py-1.5 text-left text-[11px] font-semibold leading-snug shadow ring-1 ring-slate-200 hover:ring-brand-400 sm:text-xs"
       :style="{ left: node.x + '%', top: node.y + '%' }"
       @click="goTheory(node.theoryId)"
     >
-      {{ node.label }}
+      <MathText :text="node.label" />
     </button>
   </div>
   <p class="mt-2 text-xs text-slate-500">Нажмите на узел — откроется тема в разделе «Теория».</p>

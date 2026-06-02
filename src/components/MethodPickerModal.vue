@@ -41,7 +41,7 @@ function close() {
           :disabled="picker.answered"
           @click="choose(opt.method)"
         >
-          {{ opt.method }}
+          <MathText :text="opt.method" />
         </button>
       </div>
       <div v-if="picker.answered && picker.current" class="mt-4 rounded-xl bg-slate-50 p-3 text-sm">

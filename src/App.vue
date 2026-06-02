@@ -2,20 +2,40 @@
 import { ref, onMounted } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import MethodPickerModal from '@/components/MethodPickerModal.vue'
+import WhatsNewModal from '@/components/WhatsNewModal.vue'
+import { hasSeenWhatsNew, markWhatsNewSeen } from '@/composables/useWhatsNew'
 
+const showWhatsNew = ref(false)
 const showRobot = ref(false)
 
-onMounted(() => {
+function tryRobotQuiz() {
   try {
     if (sessionStorage.getItem('robotShown')) return
     if (Math.random() < 0.3) showRobot.value = true
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
+}
+
+function closeWhatsNew() {
+  markWhatsNewSeen()
+  showWhatsNew.value = false
+  tryRobotQuiz()
+}
+
+onMounted(() => {
+  if (!hasSeenWhatsNew()) {
+    showWhatsNew.value = true
+    return
+  }
+  tryRobotQuiz()
 })
 </script>
 
 <template>
   <AppHeader />
-  <MethodPickerModal v-if="showRobot" @close="showRobot = false" />
+  <WhatsNewModal v-if="showWhatsNew" @close="closeWhatsNew" />
+  <MethodPickerModal v-else-if="showRobot" @close="showRobot = false" />
 
   <main class="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-6 sm:px-6">
     <RouterView v-slot="{ Component }">

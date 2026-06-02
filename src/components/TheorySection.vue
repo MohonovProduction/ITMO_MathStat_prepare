@@ -41,7 +41,7 @@ defineProps({
           <span class="rounded bg-white px-2 py-0.5 ring-1 ring-slate-200">
             <Formula :expr="n.symbol" :display="false" />
           </span>
-          <span class="text-slate-600">— {{ n.meaning }}</span>
+          <span class="text-slate-600">— <MathText :text="n.meaning" /></span>
         </li>
       </ul>
     </section>
@@ -58,9 +58,9 @@ defineProps({
     <section v-if="item.interpretation" class="rounded-xl bg-sky-50 p-4">
       <div class="mb-2 text-xs font-semibold uppercase text-sky-600">Как читать результат</div>
       <ul class="flex flex-col gap-1 text-sm text-sky-900">
-        <li v-if="item.interpretation.good"><strong>Хорошо:</strong> {{ item.interpretation.good }}</li>
-        <li v-if="item.interpretation.bad"><strong>Плохо:</strong> {{ item.interpretation.bad }}</li>
-        <li v-if="item.interpretation.improve"><strong>Улучшить:</strong> {{ item.interpretation.improve }}</li>
+        <li v-if="item.interpretation.good"><strong>Хорошо:</strong> <MathText :text="item.interpretation.good" /></li>
+        <li v-if="item.interpretation.bad"><strong>Плохо:</strong> <MathText :text="item.interpretation.bad" /></li>
+        <li v-if="item.interpretation.improve"><strong>Улучшить:</strong> <MathText :text="item.interpretation.improve" /></li>
       </ul>
     </section>
 
@@ -71,7 +71,8 @@ defineProps({
           v-for="(m, i) in item.metrics"
           :key="i"
           :direction="m.direction"
-          :plain="m.name + ' — ' + m.plain"
+          :name="m.name"
+          :plain="m.plain"
         />
       </div>
     </section>
