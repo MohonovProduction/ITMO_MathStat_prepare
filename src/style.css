@@ -169,3 +169,10 @@ body {
 .flip-back {
   transform: rotateY(180deg);
 }
+
+@media print {
+  header, footer, nav { display: none !important; }
+  main { max-width: 100% !important; padding: 0 !important; }
+  .cheatsheet-print details { break-inside: avoid; page-break-inside: avoid; }
+  .cheatsheet-print details[open] summary ~ * { display: block !important; }
+}

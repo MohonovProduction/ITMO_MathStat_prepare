@@ -13,6 +13,7 @@ export const DECKS = [
   { id: 'formulas', title: 'Формулы', icon: '∑', hint: 'Ключевые формулы' },
   { id: 'intuition', title: 'Понимание', icon: '💡', hint: 'Смысл «на пальцах»' },
   { id: 'notation', title: 'Обозначения', icon: '🔤', hint: 'Символы' },
+  { id: 'methods', title: 'Методы', icon: '⚗️', hint: 'Когда какой критерий' },
 ]
 
 export const flashcards = {
@@ -371,6 +372,16 @@ export const flashcards = {
     { id: 'notation-pvalue', level: 'methods', front: 'p-value', back: 'Минимальный $\\alpha$ для отвержения $H_0$.' },
     { id: 'notation-h0', level: 'methods', front: '$H_0$', back: 'Нулевая гипотеза.' },
     { id: 'notation-fish', level: 'methods', front: '$i(\\theta)$', back: 'Информация Фишера.' },
+  ],
+  methods: [
+    { id: 'methods-z', level: 'methods', front: 'Когда z-критерий для $\mu$?', back: '$\sigma^2$ известна, нормальность или большое $n$.' },
+    { id: 'methods-t', level: 'methods', front: 'Когда t-критерий?', back: '$\sigma^2$ неизвестна — используем $S^2$, распределение $T_{n-1}$.' },
+    { id: 'methods-kol', level: 'analysis', front: 'Когда Колмогоров?', back: 'Полностью задана теоретическая $F_0$, непрерывные данные.' },
+    { id: 'methods-chi', level: 'analysis', front: 'Когда $\chi^2$ Пирсона?', back: 'Группированные частоты; $df=k-1-r$ при оценённых параметрах.' },
+    { id: 'methods-ols', level: 'analysis', front: 'Когда МНК?', back: 'Линейная связь $x$ и $Y$; минимизируем $\sum(Y_i-\hat Y_i)^2$.' },
+    { id: 'methods-f', level: 'methods', front: 'Когда F-критерий?', back: 'Сравнение дисперсий двух нормальных выборок.' },
+    { id: 'methods-ci', level: 'methods', front: 'Связь ДИ и теста', back: '$\theta_0$ вне ДИ уровня $1-\alpha$ $\Leftrightarrow$ отвергаем $H_0$ на уровне $\alpha$.' },
+    { id: 'methods-p', level: 'methods', front: 'p-value', back: 'Минимальный $\alpha$, при котором ещё отвергаем $H_0$.' },
   ],
 }
 

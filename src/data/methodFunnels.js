@@ -4,4 +4,8 @@ export const methodFunnels = [
   { id: 'pearson', title: '$\\chi^2$ Пирсона', level: 'analysis', when: ['Группировка','Дискретные частоты'], inputs: ['$k$ категорий','$np_i$'], steps: ['$\\chi^2=\\sum (n_i-np_i)^2/(np_i)$','$H_{k-1-r}$'], pitfalls: ['Забыть вычесть $r$ оценённых параметров'], miniQuizIds: [23, 46] },
   { id: 'kolmogorov', title: 'Критерий Колмогорова', level: 'analysis', when: ['Непрерывное $F_0$ полностью задано'], inputs: ['$F_0(x)$'], steps: ['$D_n=\\sup|F_n-F_0|$'], pitfalls: ['Использовать при оценённых параметрах без поправки'], miniQuizIds: [22] },
   { id: 'ols', title: 'МНК-регрессия', level: 'analysis', when: ['Линейная связь $x$ и $Y$'], inputs: ['Пары $(x_i,Y_i)$'], steps: ['$\\hat\\beta_1=\\widehat{\\mathrm{cov}}/S_x^2$','ДИ для $\\beta_1$'], pitfalls: ['Выбросы по $Y$'], miniQuizIds: [27, 28] },
+,
+  { id: 'f-var', title: 'F-критерий (две дисперсии)', level: 'methods', when: ['Две нормальные выборки','Сравнение дисперсий'], inputs: ['$S_1^2$','$S_2^2$','$\alpha$'], steps: ['$F=S_1^2/S_2^2$','Сравнить с $F_{n_1-1,n_2-1}$'], pitfalls: ['Путать с t для средних'], miniQuizIds: [20] },
+  { id: 'ci-mean', title: 'ДИ для среднего', level: 'methods', when: ['Оценка $\mu$ по выборке'], inputs: ['$\bar X$','$S$','$n$','$\alpha$'], steps: ['$\bar X \pm t_{1-\alpha/2} S/\sqrt n$'], pitfalls: ['z вместо t при неизвестной $\sigma^2$'], miniQuizIds: [18, 62] },
+  { id: 'moments', title: 'Метод моментов', level: 'methods', when: ['Нужна быстрая оценка параметров'], inputs: ['Выборочные моменты'], steps: ['$\alpha_k(\theta)=\widehat\alpha_k$','Решить систему'], pitfalls: ['Не всегда эффективен'], miniQuizIds: [11, 54] },
 ]

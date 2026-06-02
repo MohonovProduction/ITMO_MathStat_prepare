@@ -18,11 +18,11 @@ const { current, index, cards, stats, flipped, statusOf, flip, next, prev, mark,
     </header>
 
     <!-- Вкладки режимов -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+    <div class="flex gap-2 overflow-x-auto pb-1 sm:grid sm:grid-cols-5 sm:overflow-visible">
       <button
         v-for="d in DECKS"
         :key="d.id"
-        class="flex flex-col items-center gap-0.5 rounded-xl px-2 py-3 text-center transition"
+        class="flex min-w-[5.5rem] flex-none flex-col items-center gap-0.5 rounded-xl px-2 py-3 text-center transition sm:min-w-0 sm:flex-1"
         :class="activeDeck === d.id ? 'bg-brand-gradient text-slate-800 shadow-sm' : 'bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50'"
         @click="activeDeck = d.id; goTo(0)"
       >
