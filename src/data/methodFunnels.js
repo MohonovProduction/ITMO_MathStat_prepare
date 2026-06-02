@@ -1,0 +1,7 @@
+export const methodFunnels = [
+  { id: 'z-one', title: 'z-критерий (одна выборка)', level: 'methods', when: ['$\\sigma^2$ известна','Нормальность или большое $n$'], inputs: ['$\\mu_0$','$\\sigma$','$\\alpha$'], steps: ['$H_0: \\mu=\\mu_0$','$z=(\\bar X-\\mu_0)/(\\sigma/\\sqrt n)$','Сравнить с критическим'], pitfalls: ['Нельзя подставлять $S$ вместо $\\sigma$ без t'], miniQuizIds: [21, 44] },
+  { id: 't-one', title: 't-критерий (одна выборка)', level: 'methods', when: ['$\\sigma^2$ неизвестна'], inputs: ['$\\mu_0$','$\\alpha$'], steps: ['$t=(\\bar X-\\mu_0)/(S/\\sqrt n)$','$T_{n-1}$'], pitfalls: ['Путать с z'], miniQuizIds: [16, 38] },
+  { id: 'pearson', title: '$\\chi^2$ Пирсона', level: 'analysis', when: ['Группировка','Дискретные частоты'], inputs: ['$k$ категорий','$np_i$'], steps: ['$\\chi^2=\\sum (n_i-np_i)^2/(np_i)$','$H_{k-1-r}$'], pitfalls: ['Забыть вычесть $r$ оценённых параметров'], miniQuizIds: [23, 46] },
+  { id: 'kolmogorov', title: 'Критерий Колмогорова', level: 'analysis', when: ['Непрерывное $F_0$ полностью задано'], inputs: ['$F_0(x)$'], steps: ['$D_n=\\sup|F_n-F_0|$'], pitfalls: ['Использовать при оценённых параметрах без поправки'], miniQuizIds: [22] },
+  { id: 'ols', title: 'МНК-регрессия', level: 'analysis', when: ['Линейная связь $x$ и $Y$'], inputs: ['Пары $(x_i,Y_i)$'], steps: ['$\\hat\\beta_1=\\widehat{\\mathrm{cov}}/S_x^2$','ДИ для $\\beta_1$'], pitfalls: ['Выбросы по $Y$'], miniQuizIds: [27, 28] },
+]

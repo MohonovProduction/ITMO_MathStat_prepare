@@ -2,39 +2,75 @@ import { defineStore } from 'pinia'
 import { LEVELS, levelById, PASS_THRESHOLD } from '@/data/levels'
 import { flashcards, DECKS } from '@/data/flashcards'
 
-const STORAGE_KEY = 'mathstat_progress_v1'
+const STORAGE_KEY_V2 = 'mathstat_progress_v2'
+const STORAGE_KEY_V1 = 'mathstat_progress_v1'
+
+function defaultFlashcards() {
+  const decks = {}
+  for (const d of DECKS) decks[d.id] = {}
+  return decks
+}
 
 function defaultState() {
   return {
-    // По каждой колоде: { [cardId]: 'known' | 'unknown' }
-    flashcards: { terms: {}, formulas: {}, intuition: {} },
-    // По каждому уровню: лучший и последний результат мини-теста
+    version: 2,
+    flashcards: defaultFlashcards(),
     miniTests: Object.fromEntries(
       LEVELS.map((l) => [l.id, { best: 0, attempts: 0, lastScore: 0, lastTotal: 0 }]),
     ),
-    // Какие уровни воронки разблокированы (первый — всегда)
     funnel: { unlocked: [LEVELS[0].id] },
-    // Полноценный экзамен
     exam: { best: 0, attempts: 0, lastPercent: 0, lastWrong: [] },
+    examTanchenko: { attempts: 0, lastSelfScore: 0, history: [] },
+    methodPicker: { seenCaseIds: [], correct: 0, total: 0 },
   }
 }
 
+function mergeFlashcards(base, parsed) {
+  const out = { ...base }
+  for (const key of Object.keys(base)) {
+    out[key] = { ...base[key], ...(parsed?.[key] || {}) }
+  }
+  if (parsed) {
+    for (const key of Object.keys(parsed)) {
+      if (!out[key]) out[key] = { ...parsed[key] }
+    }
+  }
+  return out
+}
+
 function loadState() {
+  const base = defaultState()
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return defaultState()
+    let raw = localStorage.getItem(STORAGE_KEY_V2)
+    if (!raw) {
+      raw = localStorage.getItem(STORAGE_KEY_V1)
+      if (raw) {
+        const v1 = JSON.parse(raw)
+        const migrated = {
+          ...base,
+          flashcards: mergeFlashcards(base.flashcards, v1.flashcards),
+          miniTests: { ...base.miniTests, ...(v1.miniTests || {}) },
+          funnel: { ...base.funnel, ...(v1.funnel || {}) },
+          exam: { ...base.exam, ...(v1.exam || {}) },
+        }
+        localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(migrated))
+        return migrated
+      }
+      return base
+    }
     const parsed = JSON.parse(raw)
-    // Аккуратное слияние с дефолтом — на случай новых полей в будущих версиях
-    const base = defaultState()
     return {
-      flashcards: { ...base.flashcards, ...(parsed.flashcards || {}) },
+      ...base,
+      flashcards: mergeFlashcards(base.flashcards, parsed.flashcards),
       miniTests: { ...base.miniTests, ...(parsed.miniTests || {}) },
       funnel: { ...base.funnel, ...(parsed.funnel || {}) },
       exam: { ...base.exam, ...(parsed.exam || {}) },
+      examTanchenko: { ...base.examTanchenko, ...(parsed.examTanchenko || {}) },
+      methodPicker: { ...base.methodPicker, ...(parsed.methodPicker || {}) },
     }
   } catch (e) {
-    console.warn('Не удалось прочитать прогресс, инициализирую заново', e)
-    return defaultState()
+    console.warn('Не удалось прочитать прогресс', e)
+    return base
   }
 }
 
@@ -42,7 +78,6 @@ export const useProgressStore = defineStore('progress', {
   state: () => loadState(),
 
   getters: {
-    // Полноценная статистика по колоде (known/unknown/percent)
     cardStats() {
       return (deck) => {
         const total = flashcards[deck]?.length ?? 0
@@ -53,18 +88,12 @@ export const useProgressStore = defineStore('progress', {
         return { total, known, unknown, seen: known + unknown, percent }
       }
     },
-
-    // Процент лучшего мини-теста по уровню
     levelScore() {
       return (levelId) => this.miniTests[levelId]?.best ?? 0
     },
-
-    // Пройден ли уровень (>= порога в мини-тесте)
     isLevelPassed() {
       return (levelId) => (this.miniTests[levelId]?.best ?? 0) >= PASS_THRESHOLD
     },
-
-    // Разблокирован ли уровень
     isLevelUnlocked() {
       return (levelId) => {
         const level = levelById(levelId)
@@ -74,23 +103,19 @@ export const useProgressStore = defineStore('progress', {
         return prev ? this.isLevelPassed(prev.id) : false
       }
     },
-
-    // Текущий «активный» уровень — первый незавершённый из разблокированных
     currentLevel() {
       const open = LEVELS.filter((l) => this.isLevelUnlocked(l.id))
       const firstUnpassed = open.find((l) => !this.isLevelPassed(l.id))
       return firstUnpassed || open[open.length - 1] || LEVELS[0]
     },
-
-    // Общий прогресс (0..100): карточки + мини-тесты + экзамен
     overallProgress() {
       const decks = DECKS.map((d) => this.cardStats(d.id).percent)
       const cardsAvg = decks.length ? decks.reduce((a, b) => a + b, 0) / decks.length : 0
       const miniAvg =
         LEVELS.reduce((a, l) => a + (this.miniTests[l.id]?.best ?? 0), 0) / (LEVELS.length || 1)
       const examPart = this.exam.best
-      // Веса: карточки 40%, мини-тесты 40%, экзамен 20%
-      return Math.round(cardsAvg * 0.4 + miniAvg * 0.4 + examPart * 0.2)
+      const tanchenkoPart = this.examTanchenko.lastSelfScore || 0
+      return Math.round(cardsAvg * 0.35 + miniAvg * 0.35 + examPart * 0.2 + tanchenkoPart * 0.1)
     },
   },
 
@@ -98,28 +123,28 @@ export const useProgressStore = defineStore('progress', {
     persist() {
       try {
         localStorage.setItem(
-          STORAGE_KEY,
+          STORAGE_KEY_V2,
           JSON.stringify({
+            version: 2,
             flashcards: this.flashcards,
             miniTests: this.miniTests,
             funnel: this.funnel,
             exam: this.exam,
+            examTanchenko: this.examTanchenko,
+            methodPicker: this.methodPicker,
           }),
         )
       } catch (e) {
         console.warn('Не удалось сохранить прогресс', e)
       }
     },
-
     markCard(deck, cardId, status) {
       if (!this.flashcards[deck]) this.flashcards[deck] = {}
       this.flashcards[deck][cardId] = status
     },
-
     resetDeck(deck) {
       this.flashcards[deck] = {}
     },
-
     saveMiniTest(levelId, correct, total) {
       const entry = this.miniTests[levelId] || { best: 0, attempts: 0, lastScore: 0, lastTotal: 0 }
       const percent = total ? Math.round((correct / total) * 100) : 0
@@ -131,15 +156,31 @@ export const useProgressStore = defineStore('progress', {
       this.recomputeUnlocks()
       return percent
     },
-
     saveExam(percent, wrongIds) {
       this.exam.attempts += 1
       this.exam.lastPercent = percent
       this.exam.lastWrong = [...wrongIds]
       this.exam.best = Math.max(this.exam.best, percent)
     },
-
-    // Открыть все уровни, чьи предшественники пройдены
+    saveTanchenkoAttempt({ defScores, thinkScores }) {
+      const total = 4
+      const sum = [...(defScores || []), ...(thinkScores || [])].reduce((a, b) => a + (b || 0), 0)
+      const percent = Math.round((sum / total) * 100)
+      this.examTanchenko.attempts += 1
+      this.examTanchenko.lastSelfScore = percent
+      this.examTanchenko.history = [
+        { at: Date.now(), percent, defScores, thinkScores },
+        ...(this.examTanchenko.history || []).slice(0, 9),
+      ]
+      return percent
+    },
+    saveMethodPicker(caseId, correct) {
+      if (!this.methodPicker.seenCaseIds.includes(caseId)) {
+        this.methodPicker.seenCaseIds.push(caseId)
+      }
+      this.methodPicker.total += 1
+      if (correct) this.methodPicker.correct += 1
+    },
     recomputeUnlocks() {
       const unlocked = new Set(this.funnel.unlocked)
       unlocked.add(LEVELS[0].id)
@@ -148,18 +189,12 @@ export const useProgressStore = defineStore('progress', {
       }
       this.funnel.unlocked = [...unlocked]
     },
-
     resetProgress() {
-      const fresh = defaultState()
-      this.$patch(fresh)
+      this.$patch(defaultState())
     },
   },
 })
 
-/**
- * Подписка стора на сохранение в localStorage.
- * Вызывается один раз после создания Pinia (в main.js не требуется — делаем лениво).
- */
 export function attachPersistence(store) {
   store.recomputeUnlocks()
   store.$subscribe(() => store.persist())

@@ -9,11 +9,15 @@ import ProgressBar from '@/components/ProgressBar.vue'
 
 const router = useRouter()
 const store = useProgressStore()
-const { exam } = storeToRefs(store)
+const { exam, examTanchenko } = storeToRefs(store)
 
 const overall = computed(() => store.overallProgress)
 
 const tiles = [
+  { to: '/cheatsheet', icon: '📋', title: 'Шпоргалка', text: 'Все определения и формулы в одном месте' },
+  { to: '/workflow', icon: '📐', title: 'Схема РГР', text: 'Ген. совокупность → выборка → гипотеза' },
+  { to: '/map', icon: '🗺️', title: 'Карта понятий', text: 'Связи между темами' },
+  { to: '/methods', icon: '⚗️', title: 'Методы', text: 'Когда какой критерий применять' },
   { to: '/theory', icon: '📚', title: 'Теория', text: 'Подробный разбор всех 41 вопроса с формулами и мнемониками' },
   { to: '/flashcards', icon: '🃏', title: 'Карточки', text: 'Термины, формулы и понимание — режим переворота' },
   { to: '/funnel', icon: '🎯', title: 'Воронка', text: 'Три уровня подготовки с порогом 80%' },
@@ -52,6 +56,11 @@ const levelStats = computed(() =>
             <div class="emoji text-xl">🎓</div>
             <div class="text-xs text-slate-500">Экзамен</div>
             <div class="text-lg font-bold text-slate-800">{{ exam.best }}%</div>
+          </div>
+          <div class="rounded-xl bg-slate-50 p-3 text-center">
+            <div class="emoji text-xl">📝</div>
+            <div class="text-xs text-slate-500">Танченко</div>
+            <div class="text-lg font-bold text-slate-800">{{ examTanchenko.lastSelfScore }}%</div>
           </div>
         </div>
       </div>

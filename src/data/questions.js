@@ -10,11 +10,19 @@
  *  - explanation пояснение, показывается после ответа
  */
 
+import { questionsExtra } from './questionsExtra'
+
+/**
+ * type: 'mcq' | 'relation'
+ * theoryId: связь с темой
+ */
 export const questions = [
   // ---------------- УРОВЕНЬ 1 — ОСНОВЫ ----------------
   {
     id: 1,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 1,
     question: 'Чему равно приращение (высота ступеньки) эмпирической функции распределения в точке наблюдения (без совпадений)?',
     options: ['$1$', '$1/n$', '$n$', '$1/2$'],
     answer: 1,
@@ -23,6 +31,8 @@ export const questions = [
   {
     id: 2,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 2,
     question: 'Какая величина является несмещённой оценкой дисперсии $\\sigma^2$?',
     options: [
       '$\\frac{1}{n}\\sum (X_i-\\bar X)^2$',
@@ -36,6 +46,8 @@ export const questions = [
   {
     id: 3,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 3,
     question: 'Чему равна дисперсия выборочного среднего $\\bar X$?',
     options: ['$\\sigma^2$', '$\\sigma^2/n$', '$n\\sigma^2$', '$\\sigma^2/n^2$'],
     answer: 1,
@@ -44,6 +56,8 @@ export const questions = [
   {
     id: 4,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 4,
     question: 'Какая характеристика наиболее устойчива к выбросам?',
     options: ['Выборочное среднее', 'Выборочная медиана', 'Размах', 'Выборочная дисперсия'],
     answer: 1,
@@ -52,6 +66,8 @@ export const questions = [
   {
     id: 5,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 5,
     question: 'Медиана — это квантиль какого уровня?',
     options: ['$0{,}25$', '$0{,}5$', '$0{,}75$', '$1{,}0$'],
     answer: 1,
@@ -60,6 +76,8 @@ export const questions = [
   {
     id: 6,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 6,
     question: 'Что в гистограмме отражает долю данных, попавших в интервал?',
     options: ['Высота столбика', 'Площадь столбика', 'Ширина столбика', 'Периметр столбика'],
     answer: 1,
@@ -68,6 +86,8 @@ export const questions = [
   {
     id: 7,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 7,
     question: 'Что такое статистика в математической статистике?',
     options: [
       'Истинный параметр распределения',
@@ -81,6 +101,8 @@ export const questions = [
   {
     id: 8,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 8,
     question: 'Какое свойство обязательно для простой случайной выборки?',
     options: [
       'Элементы зависимы',
@@ -94,6 +116,8 @@ export const questions = [
   {
     id: 9,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 9,
     question: 'К чему равномерно сходится эмпирическая функция распределения по теореме Гливенко–Кантелли?',
     options: [
       'К нулю',
@@ -107,6 +131,8 @@ export const questions = [
   {
     id: 10,
     level: 'basics',
+    type: 'mcq',
+    theoryId: 10,
     question: 'Выборочный начальный момент 1-го порядка — это:',
     options: ['Дисперсия', 'Выборочное среднее $\\bar X$', 'Медиана', 'Мода'],
     answer: 1,
@@ -117,6 +143,8 @@ export const questions = [
   {
     id: 11,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 11,
     question: 'На какой идее основан метод моментов?',
     options: [
       'Максимизация правдоподобия',
@@ -130,6 +158,8 @@ export const questions = [
   {
     id: 12,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 12,
     question: 'Что максимизирует метод максимального правдоподобия?',
     options: [
       'Дисперсию оценки',
@@ -143,6 +173,8 @@ export const questions = [
   {
     id: 13,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 13,
     question: 'Что утверждает неравенство Рао–Крамера для несмещённой оценки?',
     options: [
       '$D\\hat\\theta\\le 1/(n\\,i(\\theta))$',
@@ -156,6 +188,8 @@ export const questions = [
   {
     id: 14,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 14,
     question: 'Вероятность ошибки I рода — это:',
     options: ['Мощность', '$\\alpha$ (уровень значимости)', '$\\beta$', '$1-\\beta$'],
     answer: 1,
@@ -164,6 +198,8 @@ export const questions = [
   {
     id: 15,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 15,
     question: 'Чему равна мощность критерия?',
     options: ['$\\alpha$', '$\\beta$', '$1-\\beta$', '$1-\\alpha$'],
     answer: 2,
@@ -172,6 +208,8 @@ export const questions = [
   {
     id: 16,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 16,
     question: 'Какую статистику используют при неизвестной дисперсии для проверки $H_0:\\mu=\\mu_0$?',
     options: [
       'z-статистику ($N(0,1)$)',
@@ -185,6 +223,8 @@ export const questions = [
   {
     id: 17,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 17,
     question: 'Как связаны доверительный интервал и проверка гипотезы $H_0:\\theta=\\theta_0$?',
     options: [
       'Никак не связаны',
@@ -198,6 +238,8 @@ export const questions = [
   {
     id: 18,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 18,
     question: 'Что произойдёт с доверительным интервалом при увеличении уровня доверия с 95% до 99%?',
     options: ['Сузится', 'Расширится', 'Не изменится', 'Станет точечным'],
     answer: 1,
@@ -206,6 +248,8 @@ export const questions = [
   {
     id: 19,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 19,
     question: 'Чем больше информация Фишера $i(\\theta)$, тем:',
     options: [
       'Больше дисперсия оценки',
@@ -219,6 +263,8 @@ export const questions = [
   {
     id: 20,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 20,
     question: 'Какое свойство НЕ гарантируется для оценок метода моментов в общем случае?',
     options: ['Состоятельность', 'Асимптотическая нормальность', 'Эффективность (минимальная дисперсия)', 'Вычислимость'],
     answer: 2,
@@ -227,6 +273,8 @@ export const questions = [
   {
     id: 21,
     level: 'methods',
+    type: 'mcq',
+    theoryId: 21,
     question: 'Чему равно $D\\bar X$ и почему растёт точность z-критерия с ростом $n$?',
     options: [
       '$\\sigma^2$, точность не меняется',
@@ -242,6 +290,8 @@ export const questions = [
   {
     id: 22,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 22,
     question: 'На чём основан критерий Колмогорова?',
     options: [
       'На сумме квадратов отклонений частот',
@@ -255,6 +305,8 @@ export const questions = [
   {
     id: 23,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 23,
     question: 'Как устроена статистика критерия Пирсона?',
     options: [
       '$\\sum \\frac{(n_i-np_i)^2}{np_i}$',
@@ -268,6 +320,8 @@ export const questions = [
   {
     id: 24,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 24,
     question: 'Сколько степеней свободы у предельного распределения в теореме Пирсона (без оценивания параметров, $k$ категорий)?',
     options: ['$k$', '$k-1$', '$k+1$', '$n-1$'],
     answer: 1,
@@ -276,6 +330,8 @@ export const questions = [
   {
     id: 25,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 25,
     question: 'Если при использовании χ² оценили $r$ параметров по выборке, сколько степеней свободы?',
     options: ['$k-1$', '$k-1-r$', '$k+r$', '$n-r$'],
     answer: 1,
@@ -284,6 +340,8 @@ export const questions = [
   {
     id: 26,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 26,
     question: 'В каком диапазоне лежит коэффициент корреляции?',
     options: ['$[0,1]$', '$[-1,1]$', '$(-\\infty,\\infty)$', '$[0,\\infty)$'],
     answer: 1,
@@ -292,6 +350,8 @@ export const questions = [
   {
     id: 27,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 27,
     question: 'Что минимизирует метод наименьших квадратов?',
     options: [
       'Сумму остатков',
@@ -305,6 +365,8 @@ export const questions = [
   {
     id: 28,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 28,
     question: 'Чему равна оценка наклона $\\hat\\beta_1$ в линейной регрессии?',
     options: [
       '$\\bar y-\\hat\\beta_0\\bar x$',
@@ -318,6 +380,8 @@ export const questions = [
   {
     id: 29,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 29,
     question: 'Через какую точку всегда проходит линия регрессии МНК?',
     options: ['Через начало координат', 'Через точку средних $(\\bar x,\\bar y)$', 'Через максимум', 'Через медиану'],
     answer: 1,
@@ -326,6 +390,8 @@ export const questions = [
   {
     id: 30,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 30,
     question: 'Сколько степеней свободы у распределения Стьюдента при ДИ коэффициентов парной регрессии?',
     options: ['$n-1$', '$n-2$', '$n$', '$k-1$'],
     answer: 1,
@@ -334,6 +400,8 @@ export const questions = [
   {
     id: 31,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 31,
     question: 'Когда наклон $\\beta_1$ считается статистически значимым?',
     options: [
       'Когда $0$ лежит внутри его доверительного интервала',
@@ -347,6 +415,8 @@ export const questions = [
   {
     id: 32,
     level: 'analysis',
+    type: 'mcq',
+    theoryId: 32,
     question: 'Какая общая схема у всех критериев согласия?',
     options: [
       'Минимизация дисперсии',
@@ -357,10 +427,16 @@ export const questions = [
     answer: 1,
     explanation: 'Строим меру расхождения, знаем её распределение при $H_0$ и отвергаем гипотезу при превышении критического значения.',
   },
+  ...questionsExtra,
 ]
 
 export function questionsByLevel(levelId) {
   return questions.filter((q) => q.level === levelId)
+}
+
+/** Нормализованный тип вопроса */
+export function questionType(q) {
+  return q?.type || 'mcq'
 }
 
 export function questionById(id) {

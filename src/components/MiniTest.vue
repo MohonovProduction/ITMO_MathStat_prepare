@@ -12,7 +12,13 @@ const props = defineProps({
 
 const emit = defineEmits(['complete', 'cards'])
 
-let test = useTest({ levelId: props.levelId, count: props.count, instant: true })
+let test = useTest({
+  levelId: props.levelId,
+  count: props.count,
+  instant: true,
+  stratifyByTheory: true,
+  types: ['mcq', 'relation'],
+})
 const {
   current,
   index,
@@ -45,7 +51,13 @@ watch(finished, (done) => {
 
 function retry() {
   saved.value = false
-  restart({ levelId: props.levelId, count: props.count, instant: true })
+  restart({
+    levelId: props.levelId,
+    count: props.count,
+    instant: true,
+    stratifyByTheory: true,
+    types: ['mcq', 'relation'],
+  })
 }
 </script>
 

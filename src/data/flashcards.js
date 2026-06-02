@@ -12,6 +12,7 @@ export const DECKS = [
   { id: 'terms', title: 'Термины', icon: '📖', hint: 'Определения и понятия' },
   { id: 'formulas', title: 'Формулы', icon: '∑', hint: 'Ключевые формулы' },
   { id: 'intuition', title: 'Понимание', icon: '💡', hint: 'Смысл «на пальцах»' },
+  { id: 'notation', title: 'Обозначения', icon: '🔤', hint: 'Символы' },
 ]
 
 export const flashcards = {
@@ -358,6 +359,18 @@ export const flashcards = {
       front: 'Когда наклон значим?',
       back: 'Если доверительный интервал для $\\beta_1$ не содержит $0$ — связь между $x$ и $Y$ статистически значима. Степеней свободы $n-2$.',
     },
+  ],
+  notation: [
+    { id: 'notation-n', level: 'basics', front: '$n$', back: 'Объём выборки.' },
+    { id: 'notation-mu', level: 'basics', front: '$\\mu$', back: 'Среднее генеральной совокупности.' },
+    { id: 'notation-sigma2', level: 'basics', front: '$\\sigma^2$', back: 'Дисперсия генеральной совокупности.' },
+    { id: 'notation-xbar', level: 'basics', front: '$\\bar X$', back: 'Выборочное среднее.' },
+    { id: 'notation-s2', level: 'basics', front: '$S^2$', back: 'Несмещённая выборочная дисперсия.' },
+    { id: 'notation-alpha', level: 'methods', front: '$\\alpha$', back: 'Уровень значимости.' },
+    { id: 'notation-beta', level: 'methods', front: '$\\beta$', back: 'Ошибка II рода.' },
+    { id: 'notation-pvalue', level: 'methods', front: 'p-value', back: 'Минимальный $\\alpha$ для отвержения $H_0$.' },
+    { id: 'notation-h0', level: 'methods', front: '$H_0$', back: 'Нулевая гипотеза.' },
+    { id: 'notation-fish', level: 'methods', front: '$i(\\theta)$', back: 'Информация Фишера.' },
   ],
 }
 

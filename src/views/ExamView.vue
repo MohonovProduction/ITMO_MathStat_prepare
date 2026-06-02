@@ -72,7 +72,10 @@ function onComplete({ percent, wrongIds }) {
           />
         </div>
 
-        <button class="btn-primary mt-2" @click="start">Начать экзамен</button>
+        <button class="btn-primary mt-2" @click="start">Начать экзамен (15 MCQ)</button>
+        <RouterLink to="/exam/tanchenko" class="btn-secondary mt-2 block text-center">
+          Формат Танченко: 2 определения + 2 на подумать
+        </RouterLink>
         <p class="text-center text-xs text-slate-400">
           Лучший результат: {{ store.exam.best }}%
         </p>

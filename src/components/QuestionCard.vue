@@ -1,11 +1,12 @@
 <script setup>
 import MathText from '@/components/MathText.vue'
+import { questionType } from '@/data/questions'
 
 const props = defineProps({
   question: { type: Object, required: true },
-  choice: { type: Number, default: null }, // выбранный вариант (индекс) или null
-  revealed: { type: Boolean, default: false }, // показывать ли правильность и пояснение
-  index: { type: Number, default: 0 }, // номер вопроса (для подписи)
+  choice: { type: Number, default: null },
+  revealed: { type: Boolean, default: false },
+  index: { type: Number, default: 0 },
   total: { type: Number, default: 0 },
 })
 
@@ -25,7 +26,7 @@ function optionClass(i) {
 }
 
 function marker(i) {
-  if (!props.revealed) return String.fromCharCode(65 + i) // A, B, C...
+  if (!props.revealed) return String.fromCharCode(65 + i)
   if (i === props.question.answer) return '✓'
   if (props.choice === i) return '✕'
   return String.fromCharCode(65 + i)
@@ -34,9 +35,12 @@ function marker(i) {
 
 <template>
   <div class="card flex flex-col gap-5 p-5 sm:p-6">
-    <div class="flex items-center justify-between text-xs font-medium text-slate-400">
+    <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-medium text-slate-400">
       <span v-if="total">Вопрос {{ index + 1 }} из {{ total }}</span>
-      <span class="chip bg-slate-100 text-slate-500">{{ question.level }}</span>
+      <div class="flex gap-2">
+        <span v-if="questionType(question) === 'relation'" class="chip bg-violet-100 text-violet-700">На связь</span>
+        <span class="chip bg-slate-100 text-slate-500">{{ question.level }}</span>
+      </div>
     </div>
 
     <h2 class="text-lg font-semibold leading-snug text-slate-900">
@@ -49,7 +53,7 @@ function marker(i) {
         :key="i"
         type="button"
         :disabled="revealed"
-        class="flex items-start gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-colors disabled:cursor-default"
+        class="flex min-h-[44px] items-start gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-colors disabled:cursor-default"
         :class="optionClass(i)"
         @click="emit('answer', i)"
       >
@@ -68,25 +72,32 @@ function marker(i) {
     <Transition name="fade">
       <div
         v-if="revealed"
-        class="rounded-xl border-l-4 p-4 text-sm leading-relaxed"
-        :class="choice === question.answer
-          ? 'border-emerald-400 bg-emerald-50 text-emerald-900'
-          : 'border-amber-400 bg-amber-50 text-amber-900'"
+        class="flex flex-col gap-3"
       >
-        <div class="mb-1 font-semibold">
-          {{ choice === question.answer ? 'Верно!' : 'Неверно.' }}
+        <div
+          class="rounded-xl border-l-4 p-4 text-sm leading-relaxed"
+          :class="choice === question.answer
+            ? 'border-emerald-400 bg-emerald-50 text-emerald-900'
+            : 'border-amber-400 bg-amber-50 text-amber-900'"
+        >
+          <div class="mb-1 font-semibold">
+            {{ choice === question.answer ? 'Верно!' : 'Неверно.' }}
+          </div>
+          <MathText :text="question.explanation" />
         </div>
-        <MathText :text="question.explanation" />
+        <div
+          v-if="question.interpretation"
+          class="rounded-xl bg-sky-50 p-4 text-sm text-sky-900"
+        >
+          <div class="mb-1 text-xs font-semibold uppercase text-sky-600">На бытовом языке</div>
+          <MathText :text="question.interpretation" />
+        </div>
       </div>
     </Transition>
   </div>
 </template>
 
 <style scoped>
-.fade-enter-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from {
-  opacity: 0;
-}
+.fade-enter-active { transition: opacity 0.2s ease; }
+.fade-enter-from { opacity: 0; }
 </style>

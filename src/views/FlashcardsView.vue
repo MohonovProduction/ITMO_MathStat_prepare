@@ -18,7 +18,7 @@ const { current, index, cards, stats, flipped, statusOf, flip, next, prev, mark,
     </header>
 
     <!-- Вкладки режимов -->
-    <div class="grid grid-cols-3 gap-2">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
       <button
         v-for="d in DECKS"
         :key="d.id"

@@ -35,6 +35,36 @@ const routes = [
     meta: { title: 'Экзамен' },
   },
   {
+    path: '/cheatsheet',
+    name: 'cheatsheet',
+    component: () => import('@/views/CheatsheetView.vue'),
+    meta: { title: 'Шпаргалка' },
+  },
+  {
+    path: '/workflow',
+    name: 'workflow',
+    component: () => import('@/views/WorkflowView.vue'),
+    meta: { title: 'Схема РГР' },
+  },
+  {
+    path: '/map',
+    name: 'map',
+    component: () => import('@/views/ConceptMapView.vue'),
+    meta: { title: 'Карта понятий' },
+  },
+  {
+    path: '/methods',
+    name: 'methods',
+    component: () => import('@/views/MethodsView.vue'),
+    meta: { title: 'Методы' },
+  },
+  {
+    path: '/exam/tanchenko',
+    name: 'exam-tanchenko',
+    component: () => import('@/views/ExamTanchenkoView.vue'),
+    meta: { title: 'Экзамен Танченко' },
+  },
+  {
     path: '/results',
     name: 'results',
     component: () => import('@/views/ResultsView.vue'),

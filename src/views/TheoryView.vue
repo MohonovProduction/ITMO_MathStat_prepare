@@ -1,14 +1,18 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { LEVELS } from '@/data/levels'
 import { theory } from '@/data/theory'
+import { enrichedTheoryList } from '@/data/theoryEnrichment'
 import TheorySection from '@/components/TheorySection.vue'
 
+const route = useRoute()
+const router = useRouter()
 const activeLevel = ref('basics')
 const query = ref('')
 
 const items = computed(() => {
-  let list = theory.filter((t) => t.level === activeLevel.value)
+  let list = enrichedTheoryList(theory).filter((t) => t.level === activeLevel.value)
   const q = query.value.trim().toLowerCase()
   if (q) {
     list = list.filter(
@@ -20,6 +24,18 @@ const items = computed(() => {
   }
   return list
 })
+
+onMounted(async () => {
+  const qid = route.query.q
+  if (qid) {
+    const item = theory.find((t) => String(t.id) === String(qid))
+    if (item) {
+      activeLevel.value = item.level
+      await nextTick()
+      document.getElementById('q-' + item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+})
 </script>
 
 <template>
@@ -27,9 +43,11 @@ const items = computed(() => {
     <header>
       <h1 class="text-2xl font-extrabold text-slate-900">Теория</h1>
       <p class="text-slate-500">Подробный разбор экзаменационных вопросов по уровням.</p>
+      <button class="btn-secondary mt-2 text-sm" type="button" @click="router.push('/workflow')">
+        Обобщить как в РГР →
+      </button>
     </header>
 
-    <!-- Вкладки уровней -->
     <div class="flex flex-wrap gap-2">
       <button
         v-for="l in LEVELS"
@@ -42,7 +60,6 @@ const items = computed(() => {
       </button>
     </div>
 
-    <!-- Поиск -->
     <input
       v-model="query"
       type="search"
@@ -57,7 +74,7 @@ const items = computed(() => {
     </div>
 
     <p v-if="!items.length" class="card p-8 text-center text-slate-400">
-      Ничего не найдено. Измените запрос или выберите другой уровень.
+      Ничего не найдено.
     </p>
   </div>
 </template>
