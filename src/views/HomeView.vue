@@ -6,12 +6,14 @@ import { useProgressStore } from '@/store/progress'
 import { LEVELS } from '@/data/levels'
 import { DECKS } from '@/data/flashcards'
 import ProgressBar from '@/components/ProgressBar.vue'
+import { pluralDays } from '@/utils/pluralRu'
 
 const router = useRouter()
 const store = useProgressStore()
 const { exam, examTanchenko } = storeToRefs(store)
 
 const overall = computed(() => store.overallProgress)
+const prepDaysLabel = computed(() => pluralDays(store.prepDaysCount))
 
 const tiles = [
   { to: '/cheatsheet', icon: '📋', title: 'Шпоргалка', text: 'Все определения и формулы в одном месте' },
@@ -61,6 +63,12 @@ const levelStats = computed(() =>
             <div class="emoji text-xl">📝</div>
             <div class="text-xs text-slate-500">Танченко</div>
             <div class="text-lg font-bold text-slate-800">{{ examTanchenko.lastSelfScore }}%</div>
+          </div>
+          <div class="rounded-xl bg-slate-50 p-3 text-center sm:col-span-2">
+            <div class="emoji text-xl">📅</div>
+            <div class="text-xs text-slate-500">Дней подготовки</div>
+            <div class="text-lg font-bold text-slate-800">{{ prepDaysLabel }}</div>
+            <p class="mt-0.5 text-[10px] text-slate-400">уникальные дни с занятиями</p>
           </div>
         </div>
       </div>

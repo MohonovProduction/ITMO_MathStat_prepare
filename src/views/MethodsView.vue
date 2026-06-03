@@ -1,9 +1,11 @@
 <script setup>
+import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 import MathText from '@/components/MathText.vue'
 import { methodFunnels } from '@/data/methodFunnels'
 
 const router = useRouter()
+const openRobotQuiz = inject('openRobotQuiz', null)
 function goMini(ids) {
   if (ids?.length) router.push({ name: 'minitest', params: { level: 'methods' } })
 }
@@ -11,9 +13,19 @@ function goMini(ids) {
 
 <template>
   <div class="flex flex-col gap-5">
-    <header>
-      <h1 class="text-2xl font-extrabold text-slate-900">Методы анализа</h1>
-      <p class="text-slate-500">Когда применять, входы, шаги и типичные ошибки.</p>
+    <header class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-extrabold text-slate-900">Методы анализа</h1>
+        <p class="text-slate-500">Когда применять, входы, шаги и типичные ошибки.</p>
+      </div>
+      <button
+        v-if="openRobotQuiz"
+        type="button"
+        class="btn-secondary shrink-0 text-sm"
+        @click="openRobotQuiz()"
+      >
+        Проверка: выбор метода
+      </button>
     </header>
     <article v-for="m in methodFunnels" :key="m.id" class="card flex flex-col gap-3 p-5">
       <h2 class="text-lg font-bold text-slate-900">

@@ -1,41 +1,51 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, provide } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import MethodPickerModal from '@/components/MethodPickerModal.vue'
 import WhatsNewModal from '@/components/WhatsNewModal.vue'
 import { hasSeenWhatsNew, markWhatsNewSeen } from '@/composables/useWhatsNew'
+import { useProgressStore } from '@/store/progress'
 
 const showWhatsNew = ref(false)
 const showRobot = ref(false)
+const robotModalKey = ref(0)
+const store = useProgressStore()
 
-function tryRobotQuiz() {
-  try {
-    if (sessionStorage.getItem('robotShown')) return
-    if (Math.random() < 0.3) showRobot.value = true
-  } catch {
-    /* ignore */
-  }
+function showRobotQuiz() {
+  robotModalKey.value += 1
+  showRobot.value = true
 }
+
+function openRobotQuiz() {
+  showRobotQuiz()
+}
+
+provide('openRobotQuiz', openRobotQuiz)
 
 function closeWhatsNew() {
   markWhatsNewSeen()
   showWhatsNew.value = false
-  tryRobotQuiz()
+  showRobotQuiz()
+}
+
+function closeRobot() {
+  showRobot.value = false
 }
 
 onMounted(() => {
+  store.recordPrepDay()
   if (!hasSeenWhatsNew()) {
     showWhatsNew.value = true
     return
   }
-  tryRobotQuiz()
+  showRobotQuiz()
 })
 </script>
 
 <template>
   <AppHeader />
   <WhatsNewModal v-if="showWhatsNew" @close="closeWhatsNew" />
-  <MethodPickerModal v-else-if="showRobot" @close="showRobot = false" />
+  <MethodPickerModal v-else-if="showRobot" :key="robotModalKey" @close="closeRobot" />
 
   <main class="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-6 sm:px-6">
     <RouterView v-slot="{ Component }">

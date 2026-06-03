@@ -5,6 +5,13 @@ import { flashcards, DECKS } from '@/data/flashcards'
 const STORAGE_KEY_V2 = 'mathstat_progress_v2'
 const STORAGE_KEY_V1 = 'mathstat_progress_v1'
 
+export function todayKey(date = new Date()) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 function defaultFlashcards() {
   const decks = {}
   for (const d of DECKS) decks[d.id] = {}
@@ -22,6 +29,7 @@ function defaultState() {
     exam: { best: 0, attempts: 0, lastPercent: 0, lastWrong: [] },
     examTanchenko: { attempts: 0, lastSelfScore: 0, history: [] },
     methodPicker: { seenCaseIds: [], correct: 0, total: 0 },
+    prepDays: [],
   }
 }
 
@@ -52,6 +60,7 @@ function loadState() {
           miniTests: { ...base.miniTests, ...(v1.miniTests || {}) },
           funnel: { ...base.funnel, ...(v1.funnel || {}) },
           exam: { ...base.exam, ...(v1.exam || {}) },
+          prepDays: [],
         }
         localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(migrated))
         return migrated
@@ -67,6 +76,7 @@ function loadState() {
       exam: { ...base.exam, ...(parsed.exam || {}) },
       examTanchenko: { ...base.examTanchenko, ...(parsed.examTanchenko || {}) },
       methodPicker: { ...base.methodPicker, ...(parsed.methodPicker || {}) },
+      prepDays: Array.isArray(parsed.prepDays) ? [...parsed.prepDays] : base.prepDays,
     }
   } catch (e) {
     console.warn('Не удалось прочитать прогресс', e)
@@ -117,6 +127,9 @@ export const useProgressStore = defineStore('progress', {
       const tanchenkoPart = this.examTanchenko.lastSelfScore || 0
       return Math.round(cardsAvg * 0.35 + miniAvg * 0.35 + examPart * 0.2 + tanchenkoPart * 0.1)
     },
+    prepDaysCount() {
+      return this.prepDays?.length ?? 0
+    },
   },
 
   actions: {
@@ -132,15 +145,24 @@ export const useProgressStore = defineStore('progress', {
             exam: this.exam,
             examTanchenko: this.examTanchenko,
             methodPicker: this.methodPicker,
+            prepDays: this.prepDays,
           }),
         )
       } catch (e) {
         console.warn('Не удалось сохранить прогресс', e)
       }
     },
+    recordPrepDay() {
+      const key = todayKey()
+      if (!this.prepDays) this.prepDays = []
+      if (!this.prepDays.includes(key)) {
+        this.prepDays = [...this.prepDays, key].sort()
+      }
+    },
     markCard(deck, cardId, status) {
       if (!this.flashcards[deck]) this.flashcards[deck] = {}
       this.flashcards[deck][cardId] = status
+      this.recordPrepDay()
     },
     resetDeck(deck) {
       this.flashcards[deck] = {}
@@ -154,6 +176,7 @@ export const useProgressStore = defineStore('progress', {
       entry.best = Math.max(entry.best, percent)
       this.miniTests[levelId] = entry
       this.recomputeUnlocks()
+      this.recordPrepDay()
       return percent
     },
     saveExam(percent, wrongIds) {
@@ -161,6 +184,7 @@ export const useProgressStore = defineStore('progress', {
       this.exam.lastPercent = percent
       this.exam.lastWrong = [...wrongIds]
       this.exam.best = Math.max(this.exam.best, percent)
+      this.recordPrepDay()
     },
     saveTanchenkoAttempt({ defScores, thinkScores }) {
       const total = 4
@@ -172,6 +196,7 @@ export const useProgressStore = defineStore('progress', {
         { at: Date.now(), percent, defScores, thinkScores },
         ...(this.examTanchenko.history || []).slice(0, 9),
       ]
+      this.recordPrepDay()
       return percent
     },
     saveMethodPicker(caseId, correct) {
@@ -180,6 +205,7 @@ export const useProgressStore = defineStore('progress', {
       }
       this.methodPicker.total += 1
       if (correct) this.methodPicker.correct += 1
+      this.recordPrepDay()
     },
     recomputeUnlocks() {
       const unlocked = new Set(this.funnel.unlocked)

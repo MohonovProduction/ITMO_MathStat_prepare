@@ -16,7 +16,9 @@ export function useMethodPicker() {
   const chosen = ref(null)
 
   function pickCase() {
-    const pool = shuffle(methodPickerCases)
+    const pool = shuffle(
+      methodPickerCases.filter((c) => c?.id && Array.isArray(c.options) && c.options.length > 0),
+    )
     current.value = pool[0] || null
     answered.value = false
     chosen.value = null

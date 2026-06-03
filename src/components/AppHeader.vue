@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const openRobotQuiz = inject('openRobotQuiz', null)
 const open = ref(false)
 const moreOpen = ref(false)
 
@@ -68,6 +69,14 @@ function isActive(to) {
             >
               {{ m.label }}
             </RouterLink>
+            <button
+              v-if="openRobotQuiz"
+              type="button"
+              class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+              @click="moreOpen = false; openRobotQuiz()"
+            >
+              Проверка: не робот
+            </button>
           </div>
         </div>
       </nav>
@@ -96,6 +105,14 @@ function isActive(to) {
       >
         {{ m.label }}
       </RouterLink>
+      <button
+        v-if="openRobotQuiz"
+        type="button"
+        class="flex w-full rounded-lg px-3 py-2 text-left text-sm text-slate-600"
+        @click="open = false; openRobotQuiz()"
+      >
+        Проверка: не робот
+      </button>
     </nav>
   </header>
 </template>
