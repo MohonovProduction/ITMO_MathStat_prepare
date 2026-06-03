@@ -19,6 +19,10 @@ function goMini(ids) {
       <h2 class="text-lg font-bold text-slate-900">
         <MathText :text="m.title" />
       </h2>
+      <p v-if="m.purpose" class="rounded-lg bg-brand-50 px-3 py-2 text-sm text-brand-900">
+        <span class="font-semibold text-brand-700">Для чего: </span>
+        <MathText :text="m.purpose" />
+      </p>
       <div v-if="m.when?.length">
         <p class="text-xs font-semibold uppercase text-slate-400">Когда</p>
         <ul class="list-disc space-y-1 pl-5 text-sm text-slate-600">

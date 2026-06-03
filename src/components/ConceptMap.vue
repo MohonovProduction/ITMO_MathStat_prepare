@@ -1,12 +1,15 @@
 <script setup>
-import { useRouter } from 'vue-router'
 import MathText from '@/components/MathText.vue'
 import { conceptNodes, conceptEdges } from '@/data/conceptGraph'
 
-const router = useRouter()
+const props = defineProps({
+  selectedTheoryId: { type: [Number, String], default: null },
+})
 
-function goTheory(theoryId) {
-  if (theoryId) router.push({ path: '/theory', query: { q: theoryId } })
+const emit = defineEmits(['select'])
+
+function onNodeClick(theoryId) {
+  if (theoryId) emit('select', theoryId)
 }
 </script>
 
@@ -28,12 +31,17 @@ function goTheory(theoryId) {
       v-for="node in conceptNodes"
       :key="node.id"
       type="button"
-      class="absolute min-h-[40px] max-w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-2 py-1.5 text-left text-[11px] font-semibold leading-snug shadow ring-1 ring-slate-200 hover:ring-brand-400 sm:text-xs"
+      class="absolute min-h-[40px] max-w-[42%] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-2 py-1.5 text-left text-[11px] font-semibold leading-snug shadow ring-1 sm:text-xs"
+      :class="
+        selectedTheoryId === node.theoryId
+          ? 'ring-2 ring-brand-500 bg-brand-50'
+          : 'ring-slate-200 hover:ring-brand-400'
+      "
       :style="{ left: node.x + '%', top: node.y + '%' }"
-      @click="goTheory(node.theoryId)"
+      @click="onNodeClick(node.theoryId)"
     >
       <MathText :text="node.label" />
     </button>
   </div>
-  <p class="mt-2 text-xs text-slate-500">Нажмите на узел — откроется тема в разделе «Теория».</p>
+  <p class="mt-2 text-xs text-slate-500">Нажмите на узел — тема откроется ниже на этой странице.</p>
 </template>

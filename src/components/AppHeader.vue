@@ -32,7 +32,7 @@ function isActive(to) {
     <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
       <RouterLink to="/" class="flex items-center gap-2 font-extrabold">
         <span class="material-symbols-rounded text-gradient" style="font-size: 1.6rem">insights</span>
-        <span class="text-gradient hidden sm:inline">Матстат · Господин БаллОвский</span>
+        <span class="text-gradient hidden sm:inline">Матстат · Господин БаллОвский v3</span>
         <span class="text-gradient sm:hidden">Матстат</span>
       </RouterLink>
 

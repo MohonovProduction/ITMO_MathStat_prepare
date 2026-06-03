@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'mathstat_whats_new_seen_v2'
+const STORAGE_KEY = 'mathstat_whats_new_seen_v3'
 
 export function hasSeenWhatsNew() {
   try {

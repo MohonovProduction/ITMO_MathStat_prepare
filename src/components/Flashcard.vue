@@ -31,6 +31,9 @@ const emit = defineEmits(['flip', 'know', 'dontknow'])
           <div class="text-xl font-semibold leading-snug text-slate-900 sm:text-2xl">
             <MathText :text="card.front" />
           </div>
+          <p v-if="card.purposeFor" class="max-w-md text-xs text-slate-500">
+            <MathText :text="card.purposeFor" />
+          </p>
           <span class="mt-2 text-xs text-slate-400">Нажмите, чтобы перевернуть</span>
         </div>
 
