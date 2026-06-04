@@ -1,7 +1,9 @@
+import { buildFormulasDeck } from './buildFormulasDeck.js'
+
 /**
  * Карточки для изучения. Три колоды (режима):
  *  - terms     — термины и определения (вопрос: термин → ответ: определение)
- *  - formulas  — формулы (вопрос: что найти → ответ: формула)
+ *  - formulas  — формулы (название → запись на бумаге → сверка)
  *  - intuition — понимание «на пальцах» (вопрос → интуитивное объяснение)
  *
  * Каждая карточка: { id, level, front, back }.
@@ -10,7 +12,7 @@
 
 export const DECKS = [
   { id: 'terms', title: 'Термины', icon: '📖', hint: 'Определения и понятия' },
-  { id: 'formulas', title: 'Формулы', icon: '∑', hint: 'Ключевые формулы' },
+  { id: 'formulas', title: 'Формулы', icon: '∑', hint: 'Запишите на бумаге, затем сверьте' },
   { id: 'intuition', title: 'Понимание', icon: '💡', hint: 'Смысл «на пальцах»' },
   { id: 'notation', title: 'Обозначения', icon: '🔤', hint: 'Символы' },
   { id: 'methods', title: 'Методы', icon: '⚗️', hint: 'Когда какой критерий' },
@@ -140,116 +142,7 @@ export const flashcards = {
     },
   ],
 
-  formulas: [
-    {
-      id: 'formulas-1',
-      level: 'basics',
-      front: 'Эмпирическая функция распределения',
-      back: '$F_n(x)=\\dfrac{1}{n}\\sum_{i=1}^{n}\\mathbf{1}\\{X_i\\le x\\}$',
-    },
-    {
-      id: 'formulas-2',
-      level: 'basics',
-      front: 'Выборочное среднее',
-      back: '$\\bar X=\\dfrac{1}{n}\\sum_{i=1}^{n}X_i,\\quad E\\bar X=\\mu,\\quad D\\bar X=\\dfrac{\\sigma^2}{n}$',
-    },
-    {
-      id: 'formulas-3',
-      level: 'basics',
-      front: 'Несмещённая дисперсия',
-      back: '$S^2=\\dfrac{1}{n-1}\\sum_{i=1}^{n}(X_i-\\bar X)^2,\\quad E S^2=\\sigma^2$',
-    },
-    {
-      id: 'formulas-4',
-      level: 'basics',
-      front: 'Выборочные моменты',
-      back: 'Начальный: $\\widehat\\alpha_k=\\dfrac{1}{n}\\sum X_i^k$;\\; центральный: $\\widehat\\mu_k=\\dfrac{1}{n}\\sum (X_i-\\bar X)^k$',
-    },
-    {
-      id: 'formulas-5',
-      level: 'basics',
-      front: 'Высота столбика гистограммы',
-      back: '$\\text{высота}_i=\\dfrac{n_i}{n\\,h_i}$ (так, чтобы площадь = относительной частоте)',
-    },
-    {
-      id: 'formulas-6',
-      level: 'methods',
-      front: 'Функция правдоподобия и лог-правдоподобие',
-      back: '$L(\\theta)=\\prod_{i=1}^{n}f(X_i;\\theta),\\quad \\ell(\\theta)=\\ln L(\\theta),\\quad \\ell\'(\\theta)=0$',
-    },
-    {
-      id: 'formulas-7',
-      level: 'methods',
-      front: 'Информация Фишера',
-      back: '$i(\\theta)=-E\\!\\big[\\partial^2_\\theta \\ln f(X;\\theta)\\big],\\quad I_n(\\theta)=n\\,i(\\theta)$',
-    },
-    {
-      id: 'formulas-8',
-      level: 'methods',
-      front: 'Неравенство Рао–Крамера',
-      back: '$D\\hat\\theta\\ \\ge\\ \\dfrac{1}{n\\,i(\\theta)}$ (для несмещённой оценки)',
-    },
-    {
-      id: 'formulas-9',
-      level: 'methods',
-      front: 'MSE и его разложение',
-      back: '$\\mathrm{MSE}(\\hat\\theta)=D\\hat\\theta+(E\\hat\\theta-\\theta)^2$ = дисперсия + смещение²',
-    },
-    {
-      id: 'formulas-10',
-      level: 'methods',
-      front: 'z-статистика (σ известна)',
-      back: '$Z=\\dfrac{\\bar X-\\mu_0}{\\sigma/\\sqrt{n}}\\sim N(0,1)$ при $H_0$',
-    },
-    {
-      id: 'formulas-11',
-      level: 'methods',
-      front: 'Статистика Стьюдента (σ неизвестна)',
-      back: '$t=\\dfrac{\\bar X-\\mu_0}{S/\\sqrt{n}}\\sim T_{n-1}$ при $H_0$',
-    },
-    {
-      id: 'formulas-12',
-      level: 'methods',
-      front: 'Доверительный интервал для $\\mu$ (σ известна)',
-      back: '$\\bar X\\pm z_{1-\\alpha/2}\\,\\dfrac{\\sigma}{\\sqrt{n}}$',
-    },
-    {
-      id: 'formulas-13',
-      level: 'analysis',
-      front: 'Статистика Пирсона χ²',
-      back: '$\\chi^2=\\sum_{i=1}^{k}\\dfrac{(n_i-n p_i)^2}{n p_i}\\ \\xrightarrow{d}\\ H_{k-1-r}$',
-    },
-    {
-      id: 'formulas-14',
-      level: 'analysis',
-      front: 'Статистика Колмогорова',
-      back: '$D_n=\\sup_x|F_n(x)-F_0(x)|,\\quad \\sqrt{n}\\,D_n\\xrightarrow{d}K$',
-    },
-    {
-      id: 'formulas-15',
-      level: 'analysis',
-      front: 'Коэффициент корреляции (выборочный)',
-      back: '$\\hat\\rho=\\dfrac{\\sum (x_i-\\bar x)(y_i-\\bar y)}{\\sqrt{\\sum(x_i-\\bar x)^2\\sum(y_i-\\bar y)^2}}$',
-    },
-    {
-      id: 'formulas-16',
-      level: 'analysis',
-      front: 'Коэффициенты регрессии (МНК)',
-      back: '$\\hat\\beta_1=\\dfrac{\\widehat{\\mathrm{cov}}(x,y)}{S_x^2},\\quad \\hat\\beta_0=\\bar y-\\hat\\beta_1\\bar x$',
-    },
-    {
-      id: 'formulas-17',
-      level: 'analysis',
-      front: 'Регрессия через начало координат',
-      back: '$\\hat\\beta_1=\\dfrac{\\sum x_i Y_i}{\\sum x_i^2}$ (модель $Y=\\beta_1 x+\\varepsilon$)',
-    },
-    {
-      id: 'formulas-18',
-      level: 'analysis',
-      front: 'ДИ для коэффициента регрессии',
-      back: '$\\hat\\beta_1\\pm t_{1-\\alpha/2,\\,n-2}\\cdot \\mathrm{SE}(\\hat\\beta_1)$',
-    },
-  ],
+  formulas: buildFormulasDeck(),
 
   intuition: [
     {
